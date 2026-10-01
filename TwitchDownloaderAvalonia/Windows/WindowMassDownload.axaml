@@ -1,0 +1,94 @@
+<Window x:Class="TwitchDownloaderAvalonia.WindowMassDownload"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="using:TwitchDownloaderAvalonia.Localization"
+        xmlns:beh="using:TwitchDownloaderAvalonia.Behaviors"
+        Title="Mass Downloader" MinHeight="250" Height="700" MinWidth="775" Width="1100" Loaded="Window_Loaded">
+    <Window.Styles>
+        <Style Selector="TextBox">
+            <Setter Property="beh:TextBoxTripleClickBehavior.TripleClickSelectLine" Value="True" />
+        </Style>
+    </Window.Styles>
+
+    <Grid Background="{DynamicResource AppBackground}">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Label x:Name="LabelSort" Content="{loc:Loc Sort}" Margin="6,6,0,0" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}"/>
+            <ComboBox SelectedIndex="2" x:Name="ComboSortByDate" Margin="5,6,0,0" MinWidth="120" SelectionChanged="ComboSortByDate_SelectionChanged" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}">
+                <ComboBoxItem Content="{loc:Loc TopTwentyFourHours}" Tag="LAST_DAY"/>
+                <ComboBoxItem Content="{loc:Loc TopSevenDays}" Tag="LAST_WEEK"/>
+                <ComboBoxItem Content="{loc:Loc TopThirtyDays}" Tag="LAST_MONTH"/>
+                <ComboBoxItem Content="{loc:Loc TopAllTime}" Tag="ALL_TIME"/>
+            </ComboBox>
+            <ComboBox SelectedIndex="0" x:Name="ComboSortByVideoType" Margin="5,6,0,0" MinWidth="120" SelectionChanged="ComboSortByVideoType_SelectionChanged" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}">
+                <ComboBoxItem Content="{loc:Loc VideoTypeAllVideos}" Tag=""/>
+                <ComboBoxItem Content="{loc:Loc VideoTypePastBroadcasts}" Tag="ARCHIVE"/>
+                <ComboBoxItem Content="{loc:Loc VideoTypeHighlights}" Tag="HIGHLIGHT"/>
+                <ComboBoxItem Content="{loc:Loc VideoTypeUploads}" Tag="UPLOAD"/>
+            </ComboBox>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <Image x:Name="StatusImage" MaxWidth="50" Margin="0,6,6,0" IsVisible="False" />
+            <!-- Text search disabled because we cannot exclude the clear channels item from the search -->
+            <ComboBox x:Name="ComboChannel" IsEditable="True" IsTextSearchEnabled="False" Height="23" MinWidth="194" MaxWidth="300" Margin="0,6,0,0" KeyDown="ComboChannel_OnKeyDown" DropDownClosed="ComboChannel_OnDropDownClosed" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}" />
+            <Button x:Name="btnChannel" Content="{loc:Loc SetChannel}" Margin="3,6,0,0" MinWidth="84" Height="30" Click="btnChannel_Click" Background="{DynamicResource ActionButtonBackground}" Foreground="{DynamicResource ActionButtonText}" BorderBrush="{DynamicResource ActionButtonBorder}"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <Label x:Name="LabelVideoCount" Content="{loc:Loc LabelVideosPerPage}" Margin="6,6,0,0" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}"/>
+            <ComboBox SelectedIndex="1" x:Name="ComboVideoCount" Margin="5,6,6,0" MinWidth="70" SelectionChanged="ComboVideoCount_SelectionChanged" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}">
+                <ComboBoxItem Content="16" />
+                <ComboBoxItem Content="30" />
+                <ComboBoxItem Content="50" />
+                <ComboBoxItem Content="100" />
+            </ComboBox>
+        </StackPanel>
+        <ScrollViewer x:Name="scrollDownload" VerticalScrollBarVisibility="Auto" Margin="10,41,10,45">
+            <ItemsControl x:Name="itemList">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderThickness="1" CornerRadius="8" Margin="0,0,8,8" Padding="4" PointerReleased="Border_OnPointerReleased" Initialized="Border_Initialized" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}">
+                            <Border.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="{loc:Loc CopyVideoIDToClipboard}" Click="MenuItemCopyVideoID_OnClick" Foreground="{DynamicResource AppText}" />
+                                    <MenuItem Header="{loc:Loc CopyVideoURLToClipboard}" Click="MenuItemCopyVideoUrl_OnClick" Foreground="{DynamicResource AppText}" />
+                                    <MenuItem Header="{loc:Loc OpenVideoInBrowser}" Click="MenuItemOpenInBrowser_OnClick" Foreground="{DynamicResource AppText}" />
+                                </ContextMenu>
+                            </Border.ContextMenu>
+                            <StackPanel Orientation="Vertical" Width="220" Background="{DynamicResource AppElementBackground}">
+                                <Image Source="{Binding Thumbnail}" MaxHeight="90" />
+                                <TextBlock TextWrapping="Wrap" MaxHeight="40" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource AppText}">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}[{0:d}] - {1}">
+                                            <Binding Path="Time" />
+                                            <Binding Path="Title" />
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                                <DockPanel>
+                                    <TextBlock Text="{Binding LengthFormatted, StringFormat='Duration: {0}'}" HorizontalAlignment="Left" Foreground="{DynamicResource AppText}" />
+                                    <TextBlock Text="{Binding Views, StringFormat='Views: {0}'}" HorizontalAlignment="Right" DockPanel.Dock="Right" Foreground="{DynamicResource AppText}" />
+                                </DockPanel>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+            <Border Margin="10,0,0,3" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" BorderThickness="1" Padding="4,2">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{loc:Loc SelectedItems}" Foreground="{DynamicResource AppText}" />
+                    <TextBlock x:Name="textCount" Text="0" Foreground="{DynamicResource AppText}" />
+                </StackPanel>
+            </Border>
+            <Button x:Name="btnSelectAll" Content="{loc:Loc SelectAll}" Margin="5,0,0,3" MinWidth="80" Height="30" Click="btnSelectAll_Click" Background="{DynamicResource ActionButtonBackground}" Foreground="{DynamicResource ActionButtonText}" BorderBrush="{DynamicResource ActionButtonBorder}"/>
+        </StackPanel>
+        <Button x:Name="btnPrev" Content="&lt;-" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="34" Margin="0,0,80,4" Click="btnPrev_Click" Background="{DynamicResource ActionButtonBackground}" Foreground="{DynamicResource ActionButtonText}" BorderBrush="{DynamicResource ActionButtonBorder}"/>
+        <Button x:Name="btnNext" Content="-&gt;" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="34" Margin="80,0,0,4" Click="btnNext_Click" Background="{DynamicResource ActionButtonBackground}" Foreground="{DynamicResource ActionButtonText}" BorderBrush="{DynamicResource ActionButtonBorder}"/>
+        <Button x:Name="btnQueue" Content="{loc:Loc AddToQueue}" HorizontalAlignment="Right" Margin="0,0,10,4" VerticalAlignment="Bottom" MinWidth="102" Height="36" Click="btnQueue_Click" Background="{DynamicResource ActionButtonBackground}" Foreground="{DynamicResource ActionButtonText}" BorderBrush="{DynamicResource ActionButtonBorder}"/>
+    </Grid>
+</Window>

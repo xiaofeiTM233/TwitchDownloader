@@ -1,0 +1,23 @@
+<Window x:Class="TwitchDownloaderAvalonia.WindowUrlList"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="using:TwitchDownloaderAvalonia.Localization"
+        xmlns:beh="using:TwitchDownloaderAvalonia.Behaviors"
+        Title="{loc:Loc TitleUrlList}" MinHeight="590" Height="600" MinWidth="485" Width="500">
+    <Window.Styles>
+        <Style Selector="TextBox">
+            <Setter Property="beh:TextBoxTripleClickBehavior.TripleClickSelectLine" Value="True" />
+        </Style>
+    </Window.Styles>
+
+    <Grid Background="{DynamicResource AppBackground}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="{loc:Loc ListOfVodsClips}" HorizontalAlignment="Left" Margin="10,10,10,0" VerticalAlignment="Top" Foreground="{DynamicResource AppText}"/>
+        <TextBox Grid.Row="1" x:Name="textList" AcceptsReturn="True" Margin="10,6,10,0" VerticalContentAlignment="Top" TextWrapping="Wrap" Text="" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}"/>
+        <Button Grid.Row="2" x:Name="btnQueue" Content="{loc:Loc AddToQueue}" HorizontalAlignment="Center" VerticalAlignment="Bottom" MinWidth="110" Height="45" Margin="10,6,10,10" Click="btnQueue_Click" Background="{DynamicResource ActionButtonBackground}" Foreground="{DynamicResource ActionButtonText}" BorderBrush="{DynamicResource ActionButtonBorder}"/>
+    </Grid>
+</Window>

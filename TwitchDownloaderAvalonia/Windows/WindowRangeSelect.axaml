@@ -1,0 +1,26 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="using:TwitchDownloaderAvalonia.Localization"
+        xmlns:beh="using:TwitchDownloaderAvalonia.Behaviors"
+        x:Class="TwitchDownloaderAvalonia.WindowRangeSelect"
+        Title="{loc:Loc TitleRenderRange}" Height="150" Width="400" Initialized="Window_Initialized">
+    <Window.Styles>
+        <Style Selector="TextBox">
+            <Setter Property="beh:TextBoxTripleClickBehavior.TripleClickSelectLine" Value="True" />
+        </Style>
+    </Window.Styles>
+
+    <Grid Background="{DynamicResource AppBackground}">
+        <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Horizontal" Margin="20,10,0,0">
+                <TextBlock Text="{loc:Loc TrimStart}" VerticalAlignment="Center" Margin="0,0,6,0" Foreground="{DynamicResource AppText}"/>
+                <NumericUpDown x:Name="numStart" Width="120" Minimum="0" ValueChanged="numStart_ValueChanged" Foreground="{DynamicResource AppText}" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,20,0">
+                <TextBlock Text="{loc:Loc TrimEnd}" VerticalAlignment="Center" Margin="0,0,6,0" Foreground="{DynamicResource AppText}"/>
+                <NumericUpDown x:Name="numEnd" Width="120" Minimum="0" ValueChanged="numEnd_ValueChanged" Foreground="{DynamicResource AppText}" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" />
+            </StackPanel>
+            <Button Content="{loc:Loc Accept}" Margin="0,10,0,0" Click="Button_Click" Foreground="{DynamicResource ActionButtonText}" Background="{DynamicResource ActionButtonBackground}" BorderBrush="{DynamicResource ActionButtonBorder}" />
+        </StackPanel>
+    </Grid>
+</Window>

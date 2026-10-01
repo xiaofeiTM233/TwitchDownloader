@@ -1,0 +1,44 @@
+<Window x:Class="TwitchDownloaderAvalonia.MainWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="using:TwitchDownloaderAvalonia.Localization"
+        Title="Twitch Downloader" MinHeight="500" Height="540" MinWidth="750" Width="875"
+        Loaded="Window_Loaded"
+        Background="{DynamicResource AppBackground}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2" />
+            <RowDefinition Height="60" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="5"/>
+        </Grid.ColumnDefinitions>
+        <Button x:Name="btnVodDownload" Margin="4" Grid.Row="1" Grid.Column="1" MinWidth="122" Height="52" Click="btnVodDownload_Click" FontWeight="Bold" Padding="3,0,3,0" Background="{DynamicResource BigButtonBackground}" Foreground="{DynamicResource BigButtonText}" BorderBrush="{DynamicResource BigButtonBorder}">
+            <TextBlock x:Name="btnVodDownloadText" Text="{loc:Loc VodDownload}" TextWrapping="Wrap" TextAlignment="Center" MaxWidth="{Binding Bounds.Width, ElementName=btnVodDownload}" Padding="3,0,3,0" />
+        </Button>
+        <Button x:Name="btnClipDownload" Margin="4" Grid.Row="1" Grid.Column="2" MinWidth="122" Height="52" Click="btnClipDownload_Click" FontWeight="Bold" Padding="3,0,3,0" Background="{DynamicResource BigButtonBackground}" Foreground="{DynamicResource BigButtonText}" BorderBrush="{DynamicResource BigButtonBorder}">
+            <TextBlock x:Name="btnClipDownloadText" Text="{loc:Loc ClipDownload}" TextWrapping="Wrap" TextAlignment="Center" MaxWidth="{Binding Bounds.Width, ElementName=btnClipDownload}" Padding="3,0,3,0" />
+        </Button>
+        <Button x:Name="btnChatDownload" Margin="4" Grid.Row="1" Grid.Column="3" MinWidth="122" Height="52" Click="btnChatDownload_Click" FontWeight="Bold" Padding="3,0,3,0" Background="{DynamicResource BigButtonBackground}" Foreground="{DynamicResource BigButtonText}" BorderBrush="{DynamicResource BigButtonBorder}">
+            <TextBlock x:Name="btnChatDownloadText" Text="{loc:Loc ChatDownload}" TextWrapping="Wrap" TextAlignment="Center" MaxWidth="{Binding Bounds.Width, ElementName=btnChatDownload}" Padding="3,0,3,0" />
+        </Button>
+        <Button x:Name="btnChatUpdate" Margin="4" Grid.Row="1" Grid.Column="4" MinWidth="122" Height="52" Click="btnChatUpdate_Click" FontWeight="Bold" Padding="3,0,3,0" Background="{DynamicResource BigButtonBackground}" Foreground="{DynamicResource BigButtonText}" BorderBrush="{DynamicResource BigButtonBorder}">
+            <TextBlock x:Name="btnChatUpdateText" Text="{loc:Loc ChatUpdater}" TextWrapping="Wrap" TextAlignment="Center" MaxWidth="{Binding Bounds.Width, ElementName=btnChatUpdate}" Padding="3,0,3,0" />
+        </Button>
+        <Button x:Name="btnChatRender" Margin="4" Grid.Row="1" Grid.Column="5" MinWidth="122" Height="52" Click="btnChatRender_Click" FontWeight="Bold" Padding="3,0,3,0" Background="{DynamicResource BigButtonBackground}" Foreground="{DynamicResource BigButtonText}" BorderBrush="{DynamicResource BigButtonBorder}">
+            <TextBlock x:Name="btnChatRenderText" Text="{loc:Loc ChatRender}" TextWrapping="Wrap" TextAlignment="Center" MaxWidth="{Binding Bounds.Width, ElementName=btnChatRender}" Padding="3,0,3,0" />
+        </Button>
+        <Button x:Name="btnQueue" Margin="4" Grid.Row="1" Grid.Column="6" MinWidth="122" Height="52" Click="btnQueue_Click" FontWeight="Bold" Padding="3,0,3,0" Background="{DynamicResource BigButtonBackground}" Foreground="{DynamicResource BigButtonText}" BorderBrush="{DynamicResource BigButtonBorder}">
+            <TextBlock x:Name="btnQueueText" Text="{loc:Loc TaskQueue}" TextWrapping="Wrap" TextAlignment="Center" MaxWidth="{Binding Bounds.Width, ElementName=btnQueue}" Padding="3,0,3,0" />
+        </Button>
+        <ContentControl Focusable="False" x:Name="Main" Grid.Column="0" Grid.ColumnSpan="8" Grid.Row="2" Background="{DynamicResource AppBackground}" />
+    </Grid>
+</Window>

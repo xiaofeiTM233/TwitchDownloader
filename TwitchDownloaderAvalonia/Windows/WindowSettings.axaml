@@ -1,0 +1,166 @@
+<Window x:Class="TwitchDownloaderAvalonia.WindowSettings"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="using:TwitchDownloaderAvalonia.Localization"
+        xmlns:model="using:TwitchDownloaderAvalonia.Models"
+        xmlns:beh="using:TwitchDownloaderAvalonia.Behaviors"
+        Title="{loc:Loc TitleGlobalSettings}" MinWidth="450" MinHeight="675" Width="500" Height="675" SizeToContent="Height" Initialized="Window_Initialized" Closing="Window_Closing" Background="{DynamicResource AppBackground}">
+    <Window.Styles>
+        <Style Selector="TextBox">
+            <Setter Property="beh:TextBoxTripleClickBehavior.TripleClickSelectLine" Value="True" />
+        </Style>
+        <Style Selector="TextBlock.hint">
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Foreground" Value="{DynamicResource AppHyperlink}" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="TextDecorations" Value="Underline" />
+        </Style>
+    </Window.Styles>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="8"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="8"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical">
+            <WrapPanel Margin="0,0,0,10" Orientation="Horizontal">
+                <TextBlock Margin="3,9,3,3" Text="{loc:Loc CacheFolder}" Foreground="{DynamicResource AppText}"/>
+                <Button x:Name="BtnClearCache" Margin="2" MinWidth="50" Content="{loc:Loc ClearCache}" Click="BtnClearCache_Click" Background="{DynamicResource ActionButtonBackground}" BorderBrush="{DynamicResource ActionButtonBorder}" Foreground="{DynamicResource ActionButtonText}"/>
+                <Button x:Name="BtnTempBrowse" Margin="2" MinWidth="50" Content="{loc:Loc Browse}" Click="BtnTempBrowse_Click" Background="{DynamicResource ActionButtonBackground}" BorderBrush="{DynamicResource ActionButtonBorder}" Foreground="{DynamicResource ActionButtonText}" />
+                <TextBox x:Name="TextTempPath" Margin="2" MinWidth="250" MaxWidth="400" TextChanged="TextTempPath_OnTextChanged" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}" />
+            </WrapPanel>
+            <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                <TextBlock Margin="3,4,3,3" Text="{loc:Loc HideDonationButton}" Foreground="{DynamicResource AppText}" />
+                <CheckBox x:Name="CheckDonation" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,2,0,0" Checked="CheckDonation_OnCheckedChanged" Unchecked="CheckDonation_OnCheckedChanged" BorderBrush="{DynamicResource AppElementBorder}" />
+            </StackPanel>
+            <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                <TextBlock Margin="3,4,3,3" Text="{loc:Loc ReduceMotion}" Foreground="{DynamicResource AppText}" />
+                <CheckBox x:Name="CheckReduceMotion" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,2,0,0" Checked="CheckReduceMotion_OnCheckedChanged" Unchecked="CheckReduceMotion_OnCheckedChanged" BorderBrush="{DynamicResource AppElementBorder}" />
+            </StackPanel>
+            <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                <TextBlock Margin="3,3,3,4" Text="{loc:Loc SettingsTimeFormat}" Foreground="{DynamicResource AppText}" />
+                <RadioButton x:Name="RadioTimeFormatUtc" Content="{loc:Loc TimestampUtc}" Checked="RadioTimeFormat_OnCheckedChanged" Unchecked="RadioTimeFormat_OnCheckedChanged" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}" />
+                <RadioButton x:Name="RadioTimeFormatLocal" IsChecked="True" Content="{loc:Loc TimestampLocal}" Margin="3,0,0,0" Checked="RadioTimeFormat_OnCheckedChanged" Unchecked="RadioTimeFormat_OnCheckedChanged" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}" />
+            </StackPanel>
+            <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                <TextBlock Margin="3,3,3,2" Text="{loc:Loc VerboseErrors}" Foreground="{DynamicResource AppText}" />
+                <CheckBox x:Name="CheckVerboseErrors" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,2,0,0" Checked="CheckVerboseErrors_OnCheckedChanged" Unchecked="CheckVerboseErrors_OnCheckedChanged" BorderBrush="{DynamicResource AppElementBorder}" />
+            </StackPanel>
+            <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                <TextBlock Margin="3,6,3,3" Text="{loc:Loc ApplicationTheme}" Foreground="{DynamicResource AppText}" />
+                <TextBlock Classes="hint" Margin="0,6,1,0" Text="(?)" ToolTip.Tip="{loc:Loc ApplicationThemeTooltip}" PointerPressed="ThemeHint_OnPointerPressed" />
+                <TextBlock Margin="1,6,3,3" Text=":" Foreground="{DynamicResource AppText}" />
+                <ComboBox x:Name="ComboTheme" MinWidth="100" MaxWidth="345" HorizontalAlignment="Left" SelectionChanged="ComboTheme_OnSelectionChanged" Margin="3,0,3,0" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}" />
+            </StackPanel>
+            <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                <TextBlock Margin="3,0,1,0" Text="文A" FontWeight="Bold" FontSize="20" Foreground="{DynamicResource AppText}" VerticalAlignment="Center" />
+                <TextBlock Margin="3,6,3,3" Text="{loc:Loc ApplicationLanguage}" Foreground="{DynamicResource AppText}" />
+                <TextBlock Classes="hint" Margin="0,6,1,0" Text="(?)" ToolTip.Tip="{loc:Loc ApplicationLanguageTooltip}" PointerPressed="LanguageHint_OnPointerPressed" />
+                <TextBlock Margin="1,6,3,3" Text=":" Foreground="{DynamicResource AppText}" />
+                <ComboBox x:Name="ComboLocale" MinWidth="100" MaxWidth="330" HorizontalAlignment="Left" SelectionChanged="ComboLocale_OnSelectionChanged" Margin="3,0,3,0" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}" />
+            </StackPanel>
+            <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                <TextBlock Margin="3,6,3,3" Text="{loc:Loc FileCollisionBehavior}" Foreground="{DynamicResource AppText}" />
+                <TextBlock Classes="hint" Margin="0,6,1,0" Text="(?)" ToolTip.Tip="{loc:Loc FileCollisionBehaviorTooltip}" />
+                <TextBlock Margin="1,6,3,3" Text=":" Foreground="{DynamicResource AppText}" />
+                <ComboBox x:Name="ComboFileCollisionBehavior" SelectedIndex="0" MinWidth="100" HorizontalAlignment="Left" Margin="3,0,3,0" SelectionChanged="ComboFileCollisionBehavior_OnSelectionChanged" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}">
+                    <ComboBoxItem Content="{loc:Loc FileCollisionBehaviorAsk}" Tag="{x:Static model:CollisionBehavior.Prompt}" />
+                    <ComboBoxItem Content="{loc:Loc FileCollisionBehaviorOverwrite}" Tag="{x:Static model:CollisionBehavior.Overwrite}" />
+                    <ComboBoxItem Content="{loc:Loc FileCollisionBehaviorRename}" Tag="{x:Static model:CollisionBehavior.Rename}" />
+                    <ComboBoxItem Content="{loc:Loc FileCollisionBehaviorCancel}" Tag="{x:Static model:CollisionBehavior.Cancel}" />
+                </ComboBox>
+            </StackPanel>
+            <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                <TextBlock Margin="3,6,3,3" Text="{loc:Loc MaximumThreadBandwidth}" Foreground="{DynamicResource AppText}" />
+                <TextBlock Classes="hint" Margin="0,6,1,0" Text="(?)" ToolTip.Tip="{loc:Loc MaximumThreadBandwidthTooltip}" />
+                <TextBlock Margin="1,6,3,3" Text=":" Foreground="{DynamicResource AppText}" />
+                <CheckBox x:Name="CheckThrottleEnabled" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="1,6,3,3" Checked="CheckThrottleEnabled_OnCheckedChanged" Unchecked="CheckThrottleEnabled_OnCheckedChanged" BorderBrush="{DynamicResource AppElementBorder}" />
+                <NumericUpDown x:Name="NumMaximumBandwidth" Value="4096" Minimum="1" Maximum="122070" ValueChanged="NumMaximumBandwidth_OnValueChanged" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}" />
+                <TextBlock Margin="3,7,0,0" Text="KiB/s" Foreground="{DynamicResource AppText}" />
+            </StackPanel>
+            <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                <TextBlock Margin="3,6,3,3" Text="{loc:Loc LogLevels}" Foreground="{DynamicResource AppText}" />
+                <Button x:Name="ComboLogLevels" MinWidth="100" HorizontalAlignment="Left" Margin="3,0,3,0" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}">
+                    <Button.Flyout>
+                        <Flyout Placement="BottomEdgeAlignedLeft">
+                            <ItemsControl x:Name="LogLevelItemsControl">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}" Content="{Binding Content}" Margin="0,2" Foreground="{DynamicResource AppText}" Checked="LogLevelItem_SelectionChanged" Unchecked="LogLevelItem_SelectionChanged" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
+            </StackPanel>
+            <TextBlock Margin="3,5,3,3" Text="{loc:Loc DownloadFilenameTemplates}" Foreground="{DynamicResource AppText}" />
+            <StackPanel Margin="0" Orientation="Horizontal">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Margin="3,10,3,3" Text="{loc:Loc TemplateVods}" Foreground="{DynamicResource AppText}" />
+                    <TextBlock Margin="3,18,3,3" Text="{loc:Loc TemplateClips}" Foreground="{DynamicResource AppText}" />
+                    <TextBlock Margin="3,18,3,3" Text="{loc:Loc TemplateChats}" Foreground="{DynamicResource AppText}" />
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <TextBox x:Name="TextVodTemplate" Margin="3,5,3,3" MinWidth="300" MaxWidth="420" TextChanged="TextVodTemplate_OnTextChanged" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}" />
+                    <TextBox x:Name="TextClipTemplate" Margin="3" MinWidth="300" MaxWidth="420" TextChanged="TextClipTemplate_OnTextChanged" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}" />
+                    <TextBox x:Name="TextChatTemplate" Margin="3" MinWidth="300" MaxWidth="420" TextChanged="TextChatTemplate_OnTextChanged" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}" />
+                </StackPanel>
+            </StackPanel>
+            <TextBlock Margin="3,5,3,3" TextWrapping="Wrap" Foreground="{DynamicResource AppText}">
+                <Run Text="{loc:Loc AvailableParameters}" />
+            </TextBlock>
+            <WrapPanel Margin="3,0,3,3">
+                <TextBlock Classes="hint" Margin="0,0,6,0" Text="{}{title}" ToolTip.Tip="{loc:Loc FilenameParameterTitleTooltip}" PointerPressed="FilenameParameter_PointerPressed" />
+                <TextBlock Classes="hint" Margin="0,0,6,0" Text="{}{id}" ToolTip.Tip="{loc:Loc FilenameParameterIdTooltip}" PointerPressed="FilenameParameter_PointerPressed" />
+                <TextBlock Classes="hint" Margin="0,0,6,0" Text="{}{date}" ToolTip.Tip="{loc:Loc FilenameParameterDateTooltip}" PointerPressed="FilenameParameter_PointerPressed" />
+                <TextBlock Classes="hint" Margin="0,0,6,0" Text="{}{date_custom=&quot;&quot;}" ToolTip.Tip="{loc:Loc FilenameParameterDateCustomTooltip}" PointerPressed="FilenameParameter_PointerPressed" />
+                <TextBlock Classes="hint" Margin="0,0,6,0" Text="{}{channel}" ToolTip.Tip="{loc:Loc FilenameParameterChannelTooltip}" PointerPressed="FilenameParameter_PointerPressed" />
+                <TextBlock Classes="hint" Margin="0,0,6,0" Text="{}{channel_id}" ToolTip.Tip="{loc:Loc FilenameParameterChannelIdTooltip}" PointerPressed="FilenameParameter_PointerPressed" />
+                <TextBlock Classes="hint" Margin="0,0,6,0" Text="{}{clipper}" ToolTip.Tip="{loc:Loc FilenameParameterClipperTooltip}" PointerPressed="FilenameParameter_PointerPressed" />
+                <TextBlock Classes="hint" Margin="0,0,6,0" Text="{}{clipper_id}" ToolTip.Tip="{loc:Loc FilenameParameterClipperIdTooltip}" PointerPressed="FilenameParameter_PointerPressed" />
+                <TextBlock Classes="hint" Margin="0,0,6,0" Text="{}{random_string}" ToolTip.Tip="{loc:Loc FilenameParameterRandomStringTooltip}" PointerPressed="FilenameParameter_PointerPressed" />
+                <TextBlock Classes="hint" Margin="0,0,6,0" Text="{}{trim_start}" ToolTip.Tip="{loc:Loc FilenameParameterTrimStartTooltip}" PointerPressed="FilenameParameter_PointerPressed" />
+                <TextBlock Classes="hint" Margin="0,0,6,0" Text="{}{trim_start_custom=&quot;&quot;}" ToolTip.Tip="{loc:Loc FilenameParameterTrimStartCustomTooltip}" PointerPressed="FilenameParameter_PointerPressed" />
+                <TextBlock Classes="hint" Margin="0,0,6,0" Text="{}{trim_end}" ToolTip.Tip="{loc:Loc FilenameParameterTrimEndTooltip}" PointerPressed="FilenameParameter_PointerPressed" />
+                <TextBlock Classes="hint" Margin="0,0,6,0" Text="{}{trim_end_custom=&quot;&quot;}" ToolTip.Tip="{loc:Loc FilenameParameterTrimEndCustomTooltip}" PointerPressed="FilenameParameter_PointerPressed" />
+                <TextBlock Classes="hint" Margin="0,0,6,0" Text="{}{trim_length}" ToolTip.Tip="{loc:Loc FilenameParameterTrimLengthTooltip}" PointerPressed="FilenameParameter_PointerPressed" />
+                <TextBlock Classes="hint" Margin="0,0,6,0" Text="{}{trim_length_custom=&quot;&quot;}" ToolTip.Tip="{loc:Loc FilenameParameterTrimLengthCustomTooltip}" PointerPressed="FilenameParameter_PointerPressed" />
+                <TextBlock Classes="hint" Margin="0,0,6,0" Text="{}{length}" ToolTip.Tip="{loc:Loc FilenameParameterLengthTooltip}" PointerPressed="FilenameParameter_PointerPressed" />
+                <TextBlock Classes="hint" Margin="0,0,6,0" Text="{}{length_custom=&quot;&quot;}" ToolTip.Tip="{loc:Loc FilenameParameterLengthCustomTooltip}" PointerPressed="FilenameParameter_PointerPressed" />
+                <TextBlock Classes="hint" Margin="0,0,6,0" Text="{}{views}" ToolTip.Tip="{loc:Loc FilenameParameterViewsTooltip}" PointerPressed="FilenameParameter_PointerPressed" />
+                <TextBlock Classes="hint" Margin="0,0,6,0" Text="{}{game}" ToolTip.Tip="{loc:Loc FilenameParameterGameTooltip}" PointerPressed="FilenameParameter_PointerPressed" />
+            </WrapPanel>
+            <TextBlock Margin="3,5,3,3" TextWrapping="Wrap" Foreground="{DynamicResource AppText}">
+                <Run Text="{loc:Loc DateCustomFormatting}" />
+            </TextBlock>
+            <TextBlock Margin="3,0,3,3" TextWrapping="Wrap">
+                <TextBlock Classes="hint" Text="{loc:Loc DateCustomFormattingHyperlink}" PointerPressed="DateFormattingLink_OnPointerPressed" />
+            </TextBlock>
+            <TextBlock Margin="3,5,3,3" TextWrapping="Wrap" Foreground="{DynamicResource AppText}">
+                <Run Text="{loc:Loc TimeSpanCustomFormatting}" />
+            </TextBlock>
+            <TextBlock Margin="3,0,3,3" TextWrapping="Wrap">
+                <TextBlock Classes="hint" Text="{loc:Loc TimeSpanCustomFormattingHyperlink}" PointerPressed="TimeSpanFormattingLink_OnPointerPressed" />
+            </TextBlock>
+        </StackPanel>
+        <Grid Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom" MinHeight="30">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" x:Name="BtnResetSettings" Content="{loc:Loc ButtonRestoreDefaultSettings}" HorizontalAlignment="Left" Click="BtnResetSettings_OnClick" Background="{DynamicResource ActionButtonBackground}" BorderBrush="{DynamicResource ActionButtonBorder}" Foreground="{DynamicResource ActionButtonText}" />
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="BtnSaveSettings" Margin="2,0,2,0" MinWidth="50" Content="{loc:Loc ButtonSaveSettings}" Click="BtnSaveSettings_OnClick" Background="{DynamicResource ActionButtonBackground}" BorderBrush="{DynamicResource ActionButtonBorder}" Foreground="{DynamicResource ActionButtonText}" />
+                <Button x:Name="BtnCancelSettings" Margin="2,0,0,0" MinWidth="50" Content="{loc:Loc ButtonCancelSettingsChanges}" Click="BtnCancelSettings_OnClick" Background="{DynamicResource ActionButtonBackground}" BorderBrush="{DynamicResource ActionButtonBorder}" Foreground="{DynamicResource ActionButtonText}" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

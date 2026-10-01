@@ -1,0 +1,60 @@
+<Window x:Class="TwitchDownloaderAvalonia.WindowOldVideoCacheManager"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="using:TwitchDownloaderAvalonia.Localization"
+        xmlns:beh="using:TwitchDownloaderAvalonia.Behaviors"
+        Title="{loc:Loc TitleWindowOldVideoCacheManager}" MinHeight="350" MinWidth="500" Height="450" Width="800" Loaded="OnLoaded" Closing="OnClosing">
+    <Window.Styles>
+        <Style Selector="TextBox">
+            <Setter Property="beh:TextBoxTripleClickBehavior.TripleClickSelectLine" Value="True" />
+        </Style>
+        <Style Selector="DataGridRow">
+            <Setter Property="ContextMenu" Value="{StaticResource RowMenu}" />
+        </Style>
+    </Window.Styles>
+
+    <Window.Resources>
+        <ContextMenu x:Key="RowMenu">
+            <MenuItem Header="{loc:Loc ContextMenuOpenFolder}" Click="MenuItemOpenFolder_OnClick" Foreground="{DynamicResource AppText}" />
+            <MenuItem Header="{loc:Loc CopyFolderPathToClipboard}" Click="MenuItemCopyPath_OnClick" Foreground="{DynamicResource AppText}" />
+        </ContextMenu>
+    </Window.Resources>
+
+    <Grid Background="{DynamicResource AppBackground}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <DataGrid Grid.Row="0" x:Name="DataGrid" Margin="6,6,6,0" CanUserResizeColumns="False" IsReadOnly="False" AutoGenerateColumns="False" CanUserSortColumns="False" Foreground="{DynamicResource AppText}" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}">
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="{loc:Loc SelectAll}" Click="MenuItemSelectAll_OnClick" Foreground="{DynamicResource AppText}" />
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+
+            <DataGrid.Columns>
+                <!-- Workaround for DataGridCheckBoxColumn sometimes requiring multiple clicks to work for some reason -->
+                <DataGridTemplateColumn Header="{loc:Loc DeleteCacheColumnHeader}" MinWidth="55">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox HorizontalAlignment="Center" IsChecked="{Binding ShouldDelete, Mode=TwoWay}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn IsReadOnly="True" Header="{loc:Loc FilePathColumnHeader}" MinWidth="60" Width="*" Binding="{Binding Path}" Foreground="{DynamicResource AppText}" />
+                <DataGridTextColumn IsReadOnly="True" Header="{loc:Loc FileAgeColumnHeader}" MinWidth="60" Binding="{Binding AgeFormatted}" Foreground="{DynamicResource AppText}" />
+                <DataGridTextColumn IsReadOnly="True" Header="{loc:Loc FileSizeColumnHeader}" MinWidth="75" Binding="{Binding Size}" Foreground="{DynamicResource AppText}" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Button Grid.Row="1" x:Name="BtnSelectAll" Content="{loc:Loc SelectAll}" Margin="6,6,0,6" HorizontalAlignment="Left" MinWidth="80" Click="BtnSelectAll_OnClick" Foreground="{DynamicResource ActionButtonText}" Background="{DynamicResource ActionButtonBackground}" BorderBrush="{DynamicResource ActionButtonBorder}" />
+        <Button Grid.Row="1" x:Name="BtnAccept" Content="{loc:Loc Accept}" Margin="0,5,0,6" MinWidth="70" Click="BtnAccept_OnClick" Foreground="{DynamicResource ActionButtonText}" Background="{DynamicResource ActionButtonBackground}" BorderBrush="{DynamicResource ActionButtonBorder}" />
+        <Border Grid.Row="1" x:Name="LabelTotalSize" Margin="0,5,6,6" HorizontalAlignment="Right" BorderThickness="1" Padding="4,2" BorderBrush="{DynamicResource AppElementBorder}" Background="{DynamicResource AppElementBackground}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{loc:Loc SizeOfAllFiles}" Foreground="{DynamicResource AppText}" />
+                <TextBlock x:Name="TextTotalSize" Text="0B" Foreground="{DynamicResource AppText}" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

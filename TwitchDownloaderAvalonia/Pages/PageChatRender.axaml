@@ -1,0 +1,293 @@
+<UserControl x:Class="TwitchDownloaderAvalonia.PageChatRender"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="using:TwitchDownloaderAvalonia.Localization"
+             xmlns:beh="using:TwitchDownloaderAvalonia.Behaviors"
+             Initialized="Page_Initialized" Unloaded="Page_Unloaded" Loaded="Page_Loaded">
+    <UserControl.Styles>
+        <Style Selector="TextBox">
+            <Setter Property="beh:TextBoxTripleClickBehavior.TripleClickSelectLine" Value="True" />
+        </Style>
+    </UserControl.Styles>
+
+    <Grid Background="{DynamicResource AppBackground}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="28"/>
+        </Grid.RowDefinitions>
+
+        <TabControl Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Margin="0,0,20,0" Background="{DynamicResource AppBackground}">
+            <TabItem Header="{loc:Loc RenderTabGeneral}" Foreground="{DynamicResource AppText}">
+                <StackPanel>
+                    <Separator Margin="0" />
+                    <DockPanel Background="{DynamicResource AppBackground}">
+                        <StackPanel Orientation="Vertical" Margin="5,10,5,5">
+                            <TextBlock Text="{loc:Loc ChatWidth}" HorizontalAlignment="Right" Margin="0,5,0,0" Foreground="{DynamicResource AppText}"/>
+                            <TextBlock Text="{loc:Loc ChatHeight}" HorizontalAlignment="Right" Margin="0,20,0,0" Foreground="{DynamicResource AppText}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="0,10,0,5">
+                            <TextBox x:Name="textWidth" Text="12" Width="75" HorizontalAlignment="Left" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}"/>
+                            <TextBox x:Name="textHeight" Text="12" Width="75" HorizontalAlignment="Left" Margin="0,7,0,0" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="5,10,5,5">
+                            <TextBlock Text="{loc:Loc ChatFont}" HorizontalAlignment="Right" Margin="0,5,0,0" Foreground="{DynamicResource AppText}"/>
+                            <TextBlock Text="{loc:Loc ChatFontSize}" HorizontalAlignment="Right" Margin="0,20,0,0" Foreground="{DynamicResource AppText}"/>
+                            <TextBlock Text="{loc:Loc FontColor}" HorizontalAlignment="Right" Margin="0,14,0,0" Foreground="{DynamicResource AppText}"/>
+                            <TextBlock Text="{loc:Loc BackgroundColor}" HorizontalAlignment="Right" Margin="0,12,0,0" Foreground="{DynamicResource AppText}"/>
+                            <TextBlock Text="{loc:Loc AlternateBackgroundColor}" HorizontalAlignment="Right" Margin="0,12,0,0" Foreground="{DynamicResource AppText}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="0,10,0,5">
+                            <ComboBox x:Name="comboFont" MinWidth="180" MaxWidth="300" HorizontalAlignment="Left" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}"/>
+                            <NumericUpDown x:Name="numFontSize" Value="12" Width="75" HorizontalAlignment="Left" Margin="0,7,0,0" Minimum="1" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}" />
+                            <ColorPicker x:Name="colorFont" Color="#FFFFFF" Width="80" Height="26" Margin="0,5,0,0" HorizontalAlignment="Left" IsAlphaEnabled="False"/>
+                            <ColorPicker x:Name="colorBackground" Color="#FF111111" Width="80" Height="26" Margin="0,5,0,0" HorizontalAlignment="Left"/>
+                            <ColorPicker x:Name="colorAlternateBackground" Color="#FF191919" Width="80" Height="26" Margin="0,5,0,0" HorizontalAlignment="Left"/>
+                        </StackPanel>
+                    </DockPanel>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="{loc:Loc RenderTabRendering}" Foreground="{DynamicResource AppText}">
+                <StackPanel>
+                    <Separator Margin="0" />
+                    <DockPanel Background="{DynamicResource AppBackground}">
+                        <StackPanel Orientation="Vertical" Margin="5,10,5,5">
+                            <TextBlock Text="{loc:Loc Outline}" HorizontalAlignment="Right" Margin="0,0,0,0" Foreground="{DynamicResource AppText}"/>
+                            <TextBlock Text="{loc:Loc Timestamps}" HorizontalAlignment="Right" Margin="0,6,0,0" Foreground="{DynamicResource AppText}"/>
+                            <TextBlock Text="{loc:Loc SubMessages}" HorizontalAlignment="Right" Margin="0,6,0,0" Foreground="{DynamicResource AppText}"/>
+                            <TextBlock Text="{loc:Loc ChatBadges}" HorizontalAlignment="Right" Margin="0,6,0,0" Foreground="{DynamicResource AppText}"/>
+                            <TextBlock Text="{loc:Loc UpdateRate}" HorizontalAlignment="Right" Margin="0,13,0,0" Foreground="{DynamicResource AppText}"/>
+                            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,12,0,0">
+                                <TextBlock Text="{loc:Loc MessageDispersion}" Foreground="{DynamicResource AppText}"/>
+                                <Button Content="(?)" Background="Transparent" BorderThickness="0" Padding="1,0" Foreground="{DynamicResource AppHyperlink}" ToolTip.Tip="{loc:Loc MessageDispersionTooltip}" FontWeight="Bold" />
+                            </StackPanel>
+                            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,6,0,0" MaxWidth="140">
+                                <TextBlock Text="{loc:Loc AlternateMessageBackgrounds}" TextWrapping="Wrap" Foreground="{DynamicResource AppText}"/>
+                                <Button Content="(?)" Background="Transparent" BorderThickness="0" Padding="1,0" Foreground="{DynamicResource AppHyperlink}" ToolTip.Tip="{loc:Loc AlternateMessageBackgroundsTooltip}" FontWeight="Bold" VerticalAlignment="Top" />
+                            </StackPanel>
+                            <TextBlock Text="{loc:Loc IncreaseUsernameReadability}" HorizontalAlignment="Right" Margin="0,6,0,0" MaxWidth="120" TextWrapping="Wrap" Foreground="{DynamicResource AppText}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="0,10,0,5">
+                            <CheckBox x:Name="checkOutline" HorizontalAlignment="Left" Margin="0,0,0,0" BorderBrush="{DynamicResource AppElementBorder}"/>
+                            <CheckBox x:Name="checkTimestamp" HorizontalAlignment="Left" Margin="0,6,0,0" BorderBrush="{DynamicResource AppElementBorder}"/>
+                            <CheckBox x:Name="checkSub" HorizontalAlignment="Left" Margin="0,6,0,0" BorderBrush="{DynamicResource AppElementBorder}"/>
+                            <CheckBox x:Name="checkBadge" HorizontalAlignment="Left" Margin="0,6,0,0" BorderBrush="{DynamicResource AppElementBorder}"/>
+                            <TextBox x:Name="textUpdateTime" Text="0.5" Width="50" HorizontalAlignment="Left" Margin="0,7,0,0" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}"/>
+                            <CheckBox x:Name="checkDispersion" HorizontalAlignment="Left" Margin="0,6,0,0" BorderBrush="{DynamicResource AppElementBorder}"/>
+                            <CheckBox x:Name="checkAlternateMessageBackgrounds" HorizontalAlignment="Left" Margin="0,22,0,0" BorderBrush="{DynamicResource AppElementBorder}"/>
+                            <CheckBox x:Name="checkAdjustUsernameVisibility" HorizontalAlignment="Left" Margin="0,22,0,0" BorderBrush="{DynamicResource AppElementBorder}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="15,10,5,2">
+                            <TextBlock Text="{loc:Loc BttvEmotes}" HorizontalAlignment="Right" Margin="0,0,0,0" Foreground="{DynamicResource AppText}"/>
+                            <TextBlock Text="{loc:Loc FfzEmotes}" HorizontalAlignment="Right" Margin="0,6,0,0" Foreground="{DynamicResource AppText}"/>
+                            <TextBlock Text="{loc:Loc StvEmotes}" HorizontalAlignment="Right" Margin="0,6,0,0" Foreground="{DynamicResource AppText}"/>
+                            <TextBlock Text="{loc:Loc RenderUserAvatars}" HorizontalAlignment="Right" Margin="0,6,0,0" Foreground="{DynamicResource AppText}"/>
+                            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,6,0,0">
+                                <TextBlock Text="{loc:Loc Offline}" Foreground="{DynamicResource AppText}"/>
+                                <Button Content="(?)" Background="Transparent" BorderThickness="0" Padding="1,0" Foreground="{DynamicResource AppHyperlink}" ToolTip.Tip="{loc:Loc OfflineTooltip}" FontWeight="Bold" />
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="0,10,0,2">
+                            <CheckBox x:Name="checkBTTV" HorizontalAlignment="Left" Margin="0,0,0,0" BorderBrush="{DynamicResource AppElementBorder}"/>
+                            <CheckBox x:Name="checkFFZ" HorizontalAlignment="Left" Margin="0,6,0,0" BorderBrush="{DynamicResource AppElementBorder}"/>
+                            <CheckBox x:Name="checkSTV" HorizontalAlignment="Left" Margin="0,6,0,0" BorderBrush="{DynamicResource AppElementBorder}"/>
+                            <CheckBox x:Name="checkRenderAvatars" HorizontalAlignment="Left" Margin="0,6,0,0" BorderBrush="{DynamicResource AppElementBorder}"/>
+                            <CheckBox x:Name="checkOffline" HorizontalAlignment="Left" Margin="0,6,0,0" BorderBrush="{DynamicResource AppElementBorder}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="20,10,0,5">
+                            <TextBlock Text="{loc:Loc ChatBadgeFilter}" Foreground="{DynamicResource AppText}"></TextBlock>
+                            <Button x:Name="comboBadges" MinWidth="200" MaxWidth="300" HorizontalAlignment="Left" HorizontalContentAlignment="Left" Margin="0,4,0,0" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}">
+                                <TextBlock x:Name="badgeSummary" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource AppText}" />
+                                <Button.Flyout>
+                                    <Flyout Placement="BottomEdgeAlignedLeft">
+                                        <Border MinWidth="220" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" BorderThickness="1" CornerRadius="4" Padding="6">
+                                            <ItemsControl x:Name="badgeItemsControl">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" Content="{Binding Name}" Margin="0,2" Foreground="{DynamicResource AppText}" Checked="BadgeItem_SelectionChanged" Unchecked="BadgeItem_SelectionChanged" />
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </Border>
+                                    </Flyout>
+                                </Button.Flyout>
+                            </Button>
+                            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                <TextBlock Text="{loc:Loc IgnoreUsersList}" Foreground="{DynamicResource AppText}"/>
+                                <Button Content="(?)" Background="Transparent" BorderThickness="0" Padding="1,0" Foreground="{DynamicResource AppHyperlink}" ToolTip.Tip="{loc:Loc IgnoreUsersListTooltip}" FontWeight="Bold" />
+                            </StackPanel>
+                            <TextBox x:Name="textIgnoreUsersList" Margin="0,4,0,0" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                <TextBlock Text="{loc:Loc BannedWordsList}" Foreground="{DynamicResource AppText}"/>
+                                <Button Content="(?)" Background="Transparent" BorderThickness="0" Padding="1,0" Foreground="{DynamicResource AppHyperlink}" ToolTip.Tip="{loc:Loc BannedWordsListTooltip}" FontWeight="Bold" />
+                            </StackPanel>
+                            <TextBox x:Name="textBannedWordsList" Margin="0,4,0,0" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                <TextBlock Text="{loc:Loc HighlightUsersList}" Foreground="{DynamicResource AppText}"/>
+                                <Button Content="(?)" Background="Transparent" BorderThickness="0" Padding="1,0" Foreground="{DynamicResource AppHyperlink}" ToolTip.Tip="{loc:Loc HighlightUsersListTooltip}" FontWeight="Bold" />
+                            </StackPanel>
+                            <Grid Margin="0,4,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBox Grid.Column="0" x:Name="textHighlightUsersList" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}"/>
+                                <ColorPicker Grid.Column="1" x:Name="colorHighlightUsers" Color="#C8FF0059" Width="80" Height="24" Margin="5,0,0,0" HorizontalAlignment="Left"/>
+                            </Grid>
+                            <WrapPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                <TextBlock Text="{loc:Loc EmojiVendor}" Margin="0,0,0,0" Foreground="{DynamicResource AppText}"/>
+                                <RadioButton x:Name="RadioEmojiNotoColor" IsChecked="True" Content="{loc:Loc EmojiVendorNotoColor}" Margin="3,0,0,0" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}" />
+                                <RadioButton x:Name="RadioEmojiTwemoji" Content="{loc:Loc EmojiVendorTwemoji}" Margin="3,0,0,0" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}" />
+                                <RadioButton x:Name="RadioEmojiNone" Content="{loc:Loc EmojiVendorNone}" Margin="3,0,0,0" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}" />
+                            </WrapPanel>
+                        </StackPanel>
+                    </DockPanel>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="{loc:Loc RenderTabScaling}" Foreground="{DynamicResource AppText}">
+                <StackPanel>
+                    <Separator Margin="0" />
+                    <DockPanel Background="{DynamicResource AppBackground}">
+                        <StackPanel Orientation="Vertical" Margin="5,10,5,5">
+                            <TextBlock Text="{loc:Loc EmoteScale}" HorizontalAlignment="Right" Margin="0,6,0,0" Foreground="{DynamicResource AppText}"/>
+                            <TextBlock Text="{loc:Loc BadgeScale}" HorizontalAlignment="Right" Margin="0,14,0,0" Foreground="{DynamicResource AppText}"/>
+                            <TextBlock Text="{loc:Loc EmojiScale}" HorizontalAlignment="Right" Margin="0,14,0,0" Foreground="{DynamicResource AppText}"/>
+                            <TextBlock Text="{loc:Loc AvatarScale}" HorizontalAlignment="Right" Margin="0,14,0,0" Foreground="{DynamicResource AppText}"/>
+                            <TextBlock Text="{loc:Loc OutlineScale}" HorizontalAlignment="Right" Margin="0,14,0,0" Foreground="{DynamicResource AppText}"/>
+                            <TextBlock Text="{loc:Loc ChatUsernameFontSize}" ToolTip.Tip="{loc:Loc ChatUsernameFontSizeTooltip}" HorizontalAlignment="Right" Margin="0,14,0,0" Foreground="{DynamicResource AppText}"/>
+                            <TextBlock Text="{loc:Loc VerticalSpacingScale}" HorizontalAlignment="Right" Margin="0,14,0,0" Foreground="{DynamicResource AppText}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="0,10,5,5">
+                            <TextBox x:Name="textEmoteScale" Text="1.0" Width="50" HorizontalAlignment="Left" Margin="0,0,0,0" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}"/>
+                            <TextBox x:Name="textBadgeScale" Text="1.0" Width="50" HorizontalAlignment="Left" Margin="0,2,0,0" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}"/>
+                            <TextBox x:Name="textEmojiScale" Text="1.0" Width="50" HorizontalAlignment="Left" Margin="0,2,0,0" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}"/>
+                            <TextBox x:Name="textAvatarScale" Text="1.0" Width="50" HorizontalAlignment="Left" Margin="0,2,0,0" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}"/>
+                            <TextBox x:Name="textOutlineScale" Text="1.0" Width="50" HorizontalAlignment="Left" Margin="0,2,0,0" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}"/>
+                            <TextBox x:Name="textUsernameScale" Text="1.0" Width="50" HorizontalAlignment="Left" Margin="0,2,0,0" ToolTip.Tip="{loc:Loc ChatUsernameFontSizeTooltip}" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}"/>
+                            <TextBox x:Name="textVerticalScale" Text="1.0" Width="50" HorizontalAlignment="Left" Margin="0,2,0,0" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="5,10,5,5">
+                            <TextBlock Text="{loc:Loc SectionHeightScale}" HorizontalAlignment="Right" Margin="0,6,0,0" Foreground="{DynamicResource AppText}"/>
+                            <TextBlock Text="{loc:Loc WordSpacingScale}" HorizontalAlignment="Right" Margin="0,14,0,0" Foreground="{DynamicResource AppText}"/>
+                            <TextBlock Text="{loc:Loc EmoteSpacingScale}" HorizontalAlignment="Right" Margin="0,14,0,0" Foreground="{DynamicResource AppText}"/>
+                            <TextBlock Text="{loc:Loc HighlightStrokeScale}" HorizontalAlignment="Right" Margin="0,14,0,0" Foreground="{DynamicResource AppText}"/>
+                            <TextBlock Text="{loc:Loc HighlightIndentScale}" HorizontalAlignment="Right" Margin="0,14,0,0" Foreground="{DynamicResource AppText}"/>
+                            <TextBlock Text="{loc:Loc SidePaddingScale}" HorizontalAlignment="Right" Margin="0,14,0,0" Foreground="{DynamicResource AppText}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="0,10,5,5">
+                            <TextBox x:Name="textSectionHeightScale" Text="1.0" Width="50" HorizontalAlignment="Left" Margin="0,0,0,0" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}"/>
+                            <TextBox x:Name="textWordSpaceScale" Text="1.0" Width="50" HorizontalAlignment="Left" Margin="0,2,0,0" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}"/>
+                            <TextBox x:Name="textEmoteSpaceScale" Text="1.0" Width="50" HorizontalAlignment="Left" Margin="0,2,0,0" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}"/>
+                            <TextBox x:Name="textAccentStrokeScale" Text="1.0" Width="50" HorizontalAlignment="Left" Margin="0,2,0,0" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}"/>
+                            <TextBox x:Name="textAccentIndentScale" Text="1.0" Width="50" HorizontalAlignment="Left" Margin="0,2,0,0" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}"/>
+                            <TextBox x:Name="textSidePaddingScale" Text="1.0" Width="50" HorizontalAlignment="Left" Margin="0,2,0,0" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}"/>
+                        </StackPanel>
+                    </DockPanel>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="{loc:Loc RenderTabEncoding}" Foreground="{DynamicResource AppText}">
+                <StackPanel>
+                    <Separator Margin="0" />
+                    <DockPanel Background="{DynamicResource AppBackground}">
+                        <StackPanel Orientation="Vertical" Margin="5,10,5,5">
+                            <TextBlock Text="{loc:Loc RenderFileFormat}" HorizontalAlignment="Right" Margin="0,4,0,0" Foreground="{DynamicResource AppText}"/>
+                            <TextBlock Text="{loc:Loc RenderCodec}" HorizontalAlignment="Right" Margin="0,21,0,0" Foreground="{DynamicResource AppText}"/>
+                            <TextBlock Text="{loc:Loc RenderFramerate}" HorizontalAlignment="Right" Margin="0,20,0,0" Foreground="{DynamicResource AppText}"/>
+                            <TextBlock Text="{loc:Loc GenerateMask}" HorizontalAlignment="Right" Margin="0,11,0,0" Foreground="{DynamicResource AppText}"/>
+                            <TextBlock Text="{loc:Loc RenderImageSharpening}" HorizontalAlignment="Right" Margin="0,6,0,0" Foreground="{DynamicResource AppText}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="0,10,5,5">
+                            <ComboBox x:Name="comboFormat" MinWidth="120" MaxWidth="300" HorizontalAlignment="Left" SelectionChanged="ComboFormat_OnSelectionChanged" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}"/>
+                            <ComboBox x:Name="comboCodec" MinWidth="120" MaxWidth="300" HorizontalAlignment="Left" SelectionChanged="ComboCodec_OnSelectionChanged" Margin="0,7,0,0" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}"/>
+                            <TextBox x:Name="textFramerate" Text="30" Width="50" HorizontalAlignment="Left" Margin="0,7,0,0" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}"/>
+                            <CheckBox x:Name="checkMask" HorizontalAlignment="Left" Margin="0,6,0,0" BorderBrush="{DynamicResource AppElementBorder}"/>
+                            <CheckBox x:Name="CheckRenderSharpening" Margin="0,6,0,0" BorderBrush="{DynamicResource AppElementBorder}"/>
+                        </StackPanel>
+                    </DockPanel>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="{loc:Loc RenderTabFfmpeg}" Foreground="{DynamicResource AppText}">
+                <StackPanel Orientation="Vertical" Background="{DynamicResource AppBackground}">
+                    <Separator Margin="0" />
+                    <WrapPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <TextBlock Text="(!)" FontWeight="Bold" Margin="0,0,3,0" Foreground="{DynamicResource AppText}" />
+                        <TextBlock Text="{loc:Loc RenderFfmpegWarning}" Foreground="{DynamicResource AppInnerText}" FontWeight="Bold" TextWrapping="Wrap" />
+                    </WrapPanel>
+                    <TextBlock Text="{loc:Loc FfmpegInputArguments}" Margin="0,4,0,0" Foreground="{DynamicResource AppText}"></TextBlock>
+                    <TextBox x:Name="textFfmpegInput" LostFocus="textFfmpegInput_LostFocus" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}"></TextBox>
+                    <TextBlock Text="{loc:Loc FfmpegOutputArguments}" Margin="0,6,0,0" Foreground="{DynamicResource AppText}"></TextBlock>
+                    <TextBox x:Name="textFfmpegOutput" LostFocus="textFfmpegOutput_LostFocus" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}"></TextBox>
+                    <Button HorizontalAlignment="Left" Content="{loc:Loc FfmpegReset}" Margin="0,6,0,0" Click="btnResetFfmpeg_Click" Background="{DynamicResource ActionButtonBackground}" Foreground="{DynamicResource ActionButtonText}" BorderBrush="{DynamicResource ActionButtonBorder}"></Button>
+                    <WrapPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <TextBlock Foreground="{DynamicResource AppText}" TextWrapping="Wrap" Text="{loc:Loc AvailableParameters}" />
+                        <TextBlock Classes="ffmpegParam" Text="{}{fps}" PointerPressed="FfmpegParameter_Click" Cursor="Hand" FontWeight="Bold" Margin="6,0,0,0" Foreground="{DynamicResource AppText}"/>
+                        <TextBlock Classes="ffmpegParam" Text="{}{height}" PointerPressed="FfmpegParameter_Click" Cursor="Hand" FontWeight="Bold" Margin="6,0,0,0" Foreground="{DynamicResource AppText}"/>
+                        <TextBlock Classes="ffmpegParam" Text="{}{width}" PointerPressed="FfmpegParameter_Click" Cursor="Hand" FontWeight="Bold" Margin="6,0,0,0" Foreground="{DynamicResource AppText}"/>
+                        <TextBlock Classes="ffmpegParam" Text="{}{max_int}" PointerPressed="FfmpegParameter_Click" Cursor="Hand" FontWeight="Bold" Margin="6,0,0,0" Foreground="{DynamicResource AppText}"/>
+                        <TextBlock Classes="ffmpegParam" Text="{}{save_path}" PointerPressed="FfmpegParameter_Click" Cursor="Hand" FontWeight="Bold" Margin="6,0,0,0" Foreground="{DynamicResource AppText}"/>
+                        <TextBlock Classes="ffmpegParam" Text="{}{pix_fmt}" PointerPressed="FfmpegParameter_Click" Cursor="Hand" FontWeight="Bold" Margin="6,0,0,0" Foreground="{DynamicResource AppText}"/>
+                    </WrapPanel>
+                    <Button HorizontalAlignment="Left" Content="{loc:Loc FfmpegOptionsHyperlink}" Margin="0,8,0,0" Click="btnFfmpegLink_Click" Background="Transparent" BorderThickness="0" Padding="0" Foreground="{DynamicResource AppHyperlink}" />
+                </StackPanel>
+            </TabItem>
+            <TabItem IsVisible="False" Header="{loc:Loc RenderTabPreview}">
+            </TabItem>
+        </TabControl>
+
+        <WrapPanel Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" Margin="0,0,0,10" Orientation="Horizontal" HorizontalAlignment="Center">
+            <TextBlock Margin="3,8,3,3" Text="{loc:Loc JsonFile}" Foreground="{DynamicResource AppText}"/>
+            <TextBox x:Name="textJson" Margin="3" MinWidth="200" MaxWidth="400" TextChanged="TextJson_TextChanged" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}"/>
+            <Button x:Name="btnBrowse" Margin="3" MinWidth="50" Content="{loc:Loc Browse}" Click="btnBrowse_Click" Background="{DynamicResource ActionButtonBackground}" Foreground="{DynamicResource ActionButtonText}" BorderBrush="{DynamicResource ActionButtonBorder}"/>
+        </WrapPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,10">
+            <SplitButton x:Name="SplitBtnRender" Height="40" MinWidth="120" Margin="0,6,0,0" Content="{loc:Loc Render}" Click="SplitBtnRender_Click" Background="{DynamicResource ActionButtonBackground}" Foreground="{DynamicResource ActionButtonText}" BorderBrush="{DynamicResource ActionButtonBorder}">
+                <SplitButton.Flyout>
+                    <MenuFlyout>
+                        <MenuItem x:Name="MenuItemPartialRender" Header="{loc:Loc PartialRender}" Click="MenuItemPartialRender_Click"/>
+                        <MenuItem x:Name="MenuItemEnqueue" Header="{loc:Loc EnqueueRender}" Click="MenuItemEnqueue_Click"/>
+                    </MenuFlyout>
+                </SplitButton.Flyout>
+            </SplitButton>
+            <Button x:Name="BtnEnqueue" Height="40" MinWidth="120" Margin="0,6,0,0" Content="{loc:Loc EnqueueRender}" Click="BtnEnqueue_Click" IsVisible="False" Background="{DynamicResource ActionButtonBackground}" Foreground="{DynamicResource ActionButtonText}" BorderBrush="{DynamicResource ActionButtonBorder}"/>
+            <Button x:Name="BtnCancel" Height="40" MinWidth="120" Margin="0,6,0,0" Content="{loc:Loc TaskCancel}" Click="BtnCancel_Click" IsVisible="False" Background="{DynamicResource ActionButtonBackground}" Foreground="{DynamicResource ActionButtonText}" BorderBrush="{DynamicResource ActionButtonBorder}"/>
+        </StackPanel>
+        <!-- RIGHT -->
+        <StackPanel Grid.Column="4" Grid.Row="1" Grid.RowSpan="1" HorizontalAlignment="Right">
+            <StackPanel Orientation="Horizontal">
+                <Button Content="$" FontWeight="Bold" FontSize="14" x:Name="btnDonate" ToolTip.Tip="{loc:Loc DonateTooltip}" Height="26" Width="40" Click="btnDonate_Click" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}" />
+                <Button x:Name="btnSettings" Height="26" Width="40" Margin="4,0,0,0" Click="btnSettings_Click" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" Foreground="{DynamicResource AppText}">
+                    <TextBlock Text="&#x2699;" FontSize="16" />
+                </Button>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Column="4" Grid.Row="2" Grid.RowSpan="2">
+            <TextBlock Text="{loc:Loc LogHeader}" Foreground="{DynamicResource AppText}"/>
+            <Border Margin="0,3" Height="230" Background="{DynamicResource AppElementBackground}" BorderBrush="{DynamicResource AppElementBorder}" BorderThickness="1">
+                <ScrollViewer>
+                    <SelectableTextBlock x:Name="textLog" TextWrapping="Wrap" Foreground="{DynamicResource AppText}" />
+                </ScrollViewer>
+            </Border>
+            <Button x:Name="BtnClearLog" MinWidth="50" IsEnabled="False" Content="{loc:Loc ClearLog}" Click="BtnClearLog_Click" Background="{DynamicResource ActionButtonBackground}" Foreground="{DynamicResource ActionButtonText}" BorderBrush="{DynamicResource ActionButtonBorder}"/>
+        </StackPanel>
+
+        <!--STATUS BAR-->
+        <Border Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="6" Background="{DynamicResource StatusBarBackground}" BorderBrush="{DynamicResource StatusBarBorder}" BorderThickness="0,1,0,0">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <Image x:Name="statusImage" Source="avares://TwitchDownloaderAvalonia/Assets/ppHop.gif" Margin="10,2,0,2" MaxHeight="24"/>
+                <TextBlock Grid.Column="1" Text="{loc:Loc StatusIdle}" x:Name="statusMessage" FontWeight="Bold" Foreground="{DynamicResource StatusBarText}" Margin="10,1,0,1" VerticalAlignment="Center"/>
+                <ProgressBar Grid.Column="2" Width="200" Height="14" x:Name="statusProgressBar" Margin="10,1" Background="{DynamicResource StatusBarElement}" Foreground="{DynamicResource ProgressBarForeground}"/>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>
