@@ -1,0 +1,86 @@
+name: Build Avalonia GUI
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ ai/1 ]
+    paths:
+      - 'TwitchDownloaderAvalonia/**'
+      - '.github/workflows/build-avalonia.yml'
+  pull_request:
+    types: [ opened, reopened ]
+
+concurrency:
+  group: build-avalonia-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-avalonia:
+    name: Build Avalonia GUI (${{ matrix.rid }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - rid: win-x64
+            os: windows-latest
+          - rid: linux-x64
+            os: ubuntu-24.04
+          - rid: linux-arm64
+            os: ubuntu-24.04
+          - rid: osx-x64
+            os: macos-latest
+          - rid: osx-arm64
+            os: macos-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Publish (${{ matrix.rid }})
+        run: >-
+          dotnet publish TwitchDownloaderAvalonia
+          -c Release
+          -r ${{ matrix.rid }}
+          --self-contained true
+          -p:PublishSingleFile=true
+          -p:IncludeNativeLibrariesForSelfExtract=true
+          -p:DebugType=Embedded
+          -o publish/${{ matrix.rid }}
+
+      # macOS has no reliable static ffmpeg download; the app can fetch it at runtime
+      - name: Bundle FFmpeg (Windows)
+        if: matrix.rid == 'win-x64'
+        shell: pwsh
+        run: |
+          Invoke-WebRequest -Uri 'https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip' -OutFile ffmpeg.zip
+          Expand-Archive -Path ffmpeg.zip -DestinationPath ffmpeg
+          $exe = Get-ChildItem ffmpeg -Recurse -Filter ffmpeg.exe | Select-Object -First 1
+          Copy-Item $exe.FullName publish/win-x64/ffmpeg.exe
+
+      - name: Bundle FFmpeg (Linux)
+        if: startsWith(matrix.rid, 'linux')
+        shell: bash
+        run: |
+          arch=amd64
+          if [ "${{ matrix.rid }}" = "linux-arm64" ]; then arch=arm64; fi
+          curl -L --retry 3 -o ffmpeg.tar.xz "https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-${arch}-static.tar.xz"
+          tar xf ffmpeg.tar.xz --strip-components=1 --wildcards '*/ffmpeg'
+          mv ffmpeg publish/${{ matrix.rid }}/ffmpeg
+          chmod +x publish/${{ matrix.rid }}/ffmpeg
+
+      - name: Zip build
+        uses: vimtor/action-zip@v1.3
+        with:
+          files: "publish/${{ matrix.rid }}"
+          dest: TwitchDownloaderGUI-Avalonia-${{ matrix.rid }}.zip
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: TwitchDownloaderGUI-Avalonia-${{ matrix.rid }}
+          path: TwitchDownloaderGUI-Avalonia-${{ matrix.rid }}.zip
