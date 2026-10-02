@@ -21,6 +21,7 @@ namespace TwitchDownloaderAvalonia.Localization
                     return;
 
                 _culture = value;
+                OnPropertyChanged("Culture");
                 OnPropertyChanged("Item[]");
             }
         }
