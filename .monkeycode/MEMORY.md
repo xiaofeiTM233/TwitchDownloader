@@ -51,3 +51,15 @@ Entries discovered by the Agent during task execution should follow this format:
     - In XAML, `&#123;` entity escapes decode before markup-extension parsing, so `Text="&#123;pix_fmt&#125;"` still fails AVLN2000; use the `{}` escape: `Text="{}{pix_fmt}"`
     - Avalonia `TextBox` has no `VerticalScrollBarVisibility` attached property (that is ScrollViewer's); Avalonia TextBox scrolls internally
     - AVLN3001 "no public constructor" warnings on windows with required ctor parameters are benign (only affects avares:// runtime loading)
+
+[Project Knowledge Summary]
+- Date: 2026-10-02
+- Context: Discovered by Agent while validating the Avalonia publish command used by the new GitHub Actions workflow (.github/workflows/build-avalonia.yml)
+- Category: Build Methods
+- Instructions:
+  - Cross-platform publish command (validated locally on linux-x64, ~118MB self-contained single-file ELF):
+    `dotnet publish TwitchDownloaderAvalonia -c Release -r <rid> --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:DebugType=Embedded -o <out-dir>`
+  - Repo publish profiles live in `TwitchDownloaderCLI/Properties/PublishProfiles/` and `TwitchDownloaderWPF/Properties/PublishProfiles/` (SelfContained + PublishSingleFile); TwitchDownloaderAvalonia has none, flags are passed via CLI
+  - GitHub workflow `build-avalonia.yml` triggers on workflow_dispatch, push to ai/1 (paths: TwitchDownloaderAvalonia/** or the workflow file), and PRs; per-RID zip artifacts named `TwitchDownloaderGUI-Avalonia-<rid>`
+  - macOS builds skip ffmpeg bundling (no reliable static arm64 download); Windows uses gyan.dev essentials zip, Linux uses johnvansickle static tar.xz
+  - `http.postBuffer` was raised to 500MB in this clone because pushes of the large Avalonia commit failed with HTTP 408
